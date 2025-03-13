@@ -61,10 +61,12 @@ Installez les dépendances :
 
 # Backend
 cd backend
+
 npm install
 
 # Frontend
 cd frontend
+
 npm install
 
 🔌 Configuration de la base de données
