@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../PrismaService';
-import { Prisma } from '@prisma/client';
+import { Prisma, Task } from '@prisma/client';
 
 @Injectable()
 export default class TaskRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll() {
+  async findAll(): Promise<Task[]> {
     return this.prisma.task.findMany();
   }
 
@@ -20,22 +20,26 @@ export default class TaskRepository {
     data:
       | Prisma.XOR<Prisma.TaskCreateInput, Prisma.TaskUncheckedCreateInput>
       | Prisma.XOR<Prisma.TaskUpdateInput, Prisma.TaskUncheckedUpdateInput>,
-  ) {
-    // For create operation (no id provided)
+  ): Promise<Task> {
     if (!data.id) {
+      // Création d'une nouvelle tâche
       return this.prisma.task.create({
         data: {
-          // Ensure name is treated as a string
           name: data.name as string,
+          description: (data as any).description || null,
+          date: new Date(data.date as Date | string),
+          status: data.status as any,
         },
       });
     } else {
-      // For update operation
+      // Mise à jour d'une tâche existante
       return this.prisma.task.update({
-        where: { id: Number(data.id) }, // Convert to number
+        where: { id: Number(data.id) },
         data: {
-          // Only include name in the update data
           name: data.name as string,
+          description: (data as any).description || null,
+          date: new Date(data.date as Date | string),
+          status: data.status as any,
         },
       });
     }

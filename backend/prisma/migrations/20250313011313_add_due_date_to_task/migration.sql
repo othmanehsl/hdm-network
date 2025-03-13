@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `Task` ADD COLUMN `dueDate` DATETIME(3) NULL,
+    ALTER COLUMN `updatedAt` DROP DEFAULT;

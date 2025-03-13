@@ -1,6 +1,6 @@
-// src/components/App.tsx
 import React from 'react';
 import TodoPage from './TodoPage';
+import '../styles/main.css';
 
 const App: React.FC = () => {
   return (
